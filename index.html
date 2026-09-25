@@ -839,12 +839,11 @@
 
 
 
-    <p class="muted" style="margin:6px 0 0;font-size:.9rem">
-
-      عند تحميل الدفتر تظهر نافذة الطباعة:
-      اختر منها «حفظ بتنسيق PDF».
-
-    </p>
+    <p
+      id="downloadHint"
+      class="muted"
+      style="margin:6px 0 0;font-size:.9rem"
+    ></p>
 
 
 
@@ -1587,6 +1586,11 @@ function render() {
 
   const saved =
     savedResponses();
+
+
+  updateDownloadState(
+    saved
+  );
 
 
   const steps =
@@ -3091,6 +3095,85 @@ async function saveRegularActivity(
 ======================================== */
 
 
+// النشاط مكتمل إذا حُفظ، والاستبانة إذا حُسبت نتيجتها
+
+function completionOf(saved) {
+
+
+  const activities =
+    appState?.activities || [];
+
+
+  const done =
+
+    activities.filter(
+
+      activity => {
+
+        const response =
+          saved[activity.id];
+
+        return Number(activity.id) === 1
+
+          ? Boolean(response?.answers?._result)
+
+          : Boolean(response);
+
+      }
+
+    ).length;
+
+
+  return {
+
+    done,
+
+    total:
+      activities.length,
+
+    complete:
+      activities.length > 0 &&
+      done === activities.length
+
+  };
+
+}
+
+
+
+// التحميل متاح للمتدرب بعد إكمال الأنشطة كلها فقط
+
+function updateDownloadState(saved) {
+
+
+  const { done, total, complete } =
+    completionOf(saved);
+
+
+  getElement(
+    "downloadButton"
+  ).disabled =
+    !complete;
+
+
+  getElement(
+    "downloadHint"
+  ).textContent =
+
+    complete
+
+    ? "✓ أكملت الأنشطة كلها، ويمكنك الآن تحميل دفترك. عند التحميل تظهر نافذة الطباعة: اختر منها «حفظ بتنسيق PDF»."
+
+    : "يتاح تحميل الدفتر بعد إكمال الأنشطة كلها. أكملت " +
+      done +
+      " من " +
+      total +
+      ".";
+
+}
+
+
+
 async function downloadWorkbook() {
 
 
@@ -3129,6 +3212,23 @@ async function downloadWorkbook() {
       });
 
 
+    appState =
+      data;
+
+
+    if (
+      !completionOf(
+        savedResponses()
+      ).complete
+    ) {
+
+      throw new Error(
+        "أكمل الأنشطة كلها أولًا."
+      );
+
+    }
+
+
     await downloadWorkbookPdf(
 
       data.participant,
@@ -3152,12 +3252,13 @@ async function downloadWorkbook() {
   } finally {
 
 
-    button.disabled =
-      false;
-
-
     button.textContent =
       label;
+
+
+    updateDownloadState(
+      savedResponses()
+    );
 
   }
 
