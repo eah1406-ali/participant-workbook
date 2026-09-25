@@ -776,13 +776,22 @@
           type="button"
         >
 
-          تحميل الدفتر الكامل
+          تحميل الدفتر (PDF)
 
         </button>
 
       </div>
 
     </div>
+
+
+
+    <p class="muted" style="margin:6px 0 0;font-size:.9rem">
+
+      عند تحميل الدفتر تظهر نافذة الطباعة:
+      اختر منها «حفظ بتنسيق PDF».
+
+    </p>
 
 
 
@@ -814,6 +823,9 @@
 </main>
 
 
+<script src="workbook-content.js"></script>
+<script src="workbook-pdf.js"></script>
+
 <script>
 
 /* ========================================
@@ -828,117 +840,6 @@
 const API_URL =
 
   "https://uqqjkfsgcxxrrrneixeh.supabase.co/functions/v1/workbook-api";
-
-
-
-/* ========================================
-
-   أسئلة استبانة الرشاقة
-
-======================================== */
-
-
-const assessmentQuestions = [
-
-  "أعرف القيمة التي يقدمها كل عمل متكرر أقوم به.",
-
-  "أولويات عملي قليلة وواضحة ومتفق عليها مع مسؤولي.",
-
-  "أعرف كيف يُقاس نجاح عملي بما يتغير، لا بما يُنجز فقط.",
-
-  "أستطيع أن أشرح لزميل جديد لماذا يقوم فريقنا بمهامه الأساسية.",
-
-  "ألاحظ مبكرًا التغيرات التي تؤثر في عملي: احتياجات المستفيدين والظروف والموارد.",
-
-  "أعدّل طريقة التنفيذ عندما يتغير الواقع دون أن أفقد الغاية.",
-
-  "أعرف حدود صلاحيتي في تعديل خطة العمل، ومن يقرر فيما يتجاوزها.",
-
-  "يتخذ فريقنا قرارات التعديل في وقتها، لا بعد فوات الأوان.",
-
-  "أعرف ما يحتاجه الآخرون مني، ومتى يحتاجونه.",
-
-  "تصلني المعلومات والقرارات التي أحتاجها من الوحدات الأخرى في وقتها.",
-
-  "أعرف أين ينتظر العمل غالبًا في المسار الذي أشارك فيه.",
-
-  "عندما يتعثر عمل مشترك، نبحث عن موضع توقف التدفق قبل البحث عن المقصّر.",
-
-  "أراجع ما حدث بعد المهام المهمة أو المشكلات مراجعة قصيرة.",
-
-  "عندما تتكرر مشكلة، أسعى إلى تغيير الإجراء لا إلى معالجة الحالة فقط.",
-
-  "أجرّب التحسينات على نطاق صغير قبل تعميمها.",
-
-  "أشارك زملائي ما تعلمته من الأخطاء والتجارب."
-
-];
-
-
-
-/* ========================================
-
-   أبعاد الاستبانة ومفتاح القراءة
-   (مطابقة للاستبانة المعتمدة)
-
-======================================== */
-
-
-const dimensionNames = [
-
-  "الوضوح",
-
-  "المرونة",
-
-  "التكامل",
-
-  "التعلّم"
-
-];
-
-
-const dimensionOrdinals = [
-
-  "الأول",
-
-  "الثاني",
-
-  "الثالث",
-
-  "الرابع"
-
-];
-
-
-const scoreKey = [
-
-  [
-    "17–20",
-    "ممارسة راسخة",
-    "حافظ عليها، وانقلها إلى زملائك وفريقك."
-  ],
-
-  [
-    "12–16",
-    "ممارسة موجودة لكنها غير منتظمة",
-    "اجعلها عادة: موعد ثابت، ومسؤول واضح، وأداة بسيطة."
-  ],
-
-  [
-    "4–11",
-    "فرصة تحسين أولى",
-    "ابدأ منها في عيادة الرشاقة بأصغر تحسين ممكن."
-  ]
-
-];
-
-
-const methodNote =
-
-  "أداة تأمل ذاتي مبنية على أبعاد لقاء «رشاقة الأداء المؤسسي»، " +
-  "ومستأنسة بأبعاد مقاييس الرشاقة في الأدبيات. ليست مقياسًا محكّمًا، " +
-  "ولم تخضع لاختبار صدق وثبات؛ فلا تُستخدم لتقييم الأشخاص " +
-  "أو مقارنة الجهات أو اتخاذ قرارات إدارية.";
 
 
 
@@ -1098,289 +999,6 @@ const improvementIdeas = {
 
 /* ========================================
 
-   الأنشطة 2 إلى 8
-
-======================================== */
-
-
-const activityDefinitions = {
-
-
-  2: {
-
-    title:
-      "لكي ماذا؟",
-
-    help:
-      "اختر مهمة متكررة في عملك، ثم تتبّع الغاية التي تقود إليها.",
-
-    fields: [
-
-      [
-        "task",
-        "المهمة التي أقوم بها"
-      ],
-
-      [
-        "why",
-        "أقوم بها لكي"
-      ],
-
-      [
-        "change",
-        "إذا نجحت جيدًا، فما الذي سيتغير؟"
-      ],
-
-      [
-        "beneficiary",
-        "من المستفيد من هذا التغيير؟"
-      ]
-
-    ]
-
-  },
-
-
-  3: {
-
-    title:
-      "أين توقف التدفق؟",
-
-    help:
-      "انظر إلى رحلة العمل كاملة قبل القفز إلى الحل.",
-
-    fields: [
-
-      [
-        "start",
-        "أين يبدأ العمل؟"
-      ],
-
-      [
-        "move",
-        "إلى من ينتقل؟"
-      ],
-
-      [
-        "wait",
-        "أين ينتظر غالبًا؟"
-      ],
-
-      [
-        "decision",
-        "أين يصدر القرار؟"
-      ],
-
-      [
-        "novalue",
-        "ما الخطوة التي لا تضيف قيمة واضحة؟"
-      ],
-
-      [
-        "improve",
-        "أصغر تحسين يمكن أن يقلل الانتظار أو يوضح المسار"
-      ]
-
-    ]
-
-  },
-
-
-  4: {
-
-    title:
-      "ما الثابت وما الذي يمكن تعديله؟",
-
-    help:
-      "افصل بين الغاية والطريق عندما تتغير الظروف.",
-
-    fields: [
-
-      [
-        "goal",
-        "ما الهدف الثابت في موقف من واقعك؟"
-      ],
-
-      [
-        "reality",
-        "ما الذي تغير في الواقع؟"
-      ],
-
-      [
-        "adjust",
-        "ما الذي يمكن تعديله دون فقدان الوجهة؟"
-      ]
-
-    ]
-
-  },
-
-
-  5: {
-
-    title:
-      "من المهمة إلى الأثر",
-
-    help:
-      "انتقل خطوة خطوة من الفعل إلى القيمة.",
-
-    fields: [
-
-      [
-        "task",
-        "المهمة — ماذا أفعل؟"
-      ],
-
-      [
-        "output",
-        "المخرج — ماذا ينتج مباشرة؟"
-      ],
-
-      [
-        "outcome",
-        "النتيجة — ماذا يتغير بسبب ذلك؟"
-      ],
-
-      [
-        "impact",
-        "الأثر — ما القيمة الأبعد أو الأكثر استدامة؟"
-      ],
-
-      [
-        "beneficiary",
-        "من المستفيد؟"
-      ],
-
-      [
-        "stop",
-        "لو توقفت هذه المهمة شهرًا كاملًا، ماذا سيتأثر؟"
-      ],
-
-      [
-        "value",
-        "ما الذي يخبرني به ذلك عن قيمة المهمة أو طريقة تنفيذها؟"
-      ]
-
-    ]
-
-  },
-
-
-  6: {
-
-    title:
-      "ماذا تعلمنا؟ وماذا سنغير؟",
-
-    help:
-      "التعلم الحقيقي يظهر عندما يتغير شيء في طريقة العمل لاحقًا.",
-
-    fields: [
-
-      [
-        "happened",
-        "ماذا حدث؟"
-      ],
-
-      [
-        "why",
-        "لماذا حدث؟"
-      ],
-
-      [
-        "learned",
-        "ماذا تعلمنا؟"
-      ],
-
-      [
-        "change",
-        "ماذا سنغير؟"
-      ],
-
-      [
-        "owner",
-        "من المسؤول؟ ومتى؟"
-      ]
-
-    ]
-
-  },
-
-
-  7: {
-
-    title:
-      "عيادة الرشاقة",
-
-    help:
-      "ابحث عن أصغر تحسين قابل للتجربة.",
-
-    fields: [
-
-      [
-        "practice",
-        "الممارسة التي سأراجعها"
-      ],
-
-      [
-        "problem",
-        "المشكلة الأقرب: وضوح / أولوية / معلومة / قرار / تنسيق / تعلم / أثر"
-      ],
-
-      [
-        "small",
-        "أصغر تحسين يمكن تجربته"
-      ],
-
-      [
-        "with",
-        "مع من أحتاج إلى العمل؟"
-      ],
-
-      [
-        "when",
-        "متى سأجربه؟"
-      ],
-
-      [
-        "measure",
-        "كيف سأعرف أنه نجح؟"
-      ]
-
-    ]
-
-  },
-
-
-  8: {
-
-    title:
-      "فكرة واحدة سأبدأ بها بعد اللقاء",
-
-    help:
-      "اختم اللقاء بخطوة عملية واحدة.",
-
-    fields: [
-
-      [
-        "start",
-        "سأبدأ بـ"
-      ],
-
-      [
-        "change",
-        "لأنني أريد أن يتغير"
-      ]
-
-    ]
-
-  }
-
-};
-
-
-
-/* ========================================
-
    الحالة العامة
 
 ======================================== */
@@ -1403,43 +1021,6 @@ let currentActivity = 1;
 const getElement = id =>
 
   document.getElementById(id);
-
-
-
-/* ========================================
-
-   تنظيف النصوص
-
-======================================== */
-
-
-function escapeHtml(value) {
-
-  return String(
-    value ?? ""
-  )
-
-  .replaceAll(
-    "&",
-    "&amp;"
-  )
-
-  .replaceAll(
-    "<",
-    "&lt;"
-  )
-
-  .replaceAll(
-    ">",
-    "&gt;"
-  )
-
-  .replaceAll(
-    '"',
-    "&quot;"
-  );
-
-}
 
 
 
@@ -3452,12 +3033,31 @@ async function saveRegularActivity(
 
 /* ========================================
 
-   تحميل الدفتر الكامل
+   تحميل الدفتر الكامل (PDF)
 
 ======================================== */
 
 
 async function downloadWorkbook() {
+
+
+  const button =
+
+    getElement(
+      "downloadButton"
+    );
+
+
+  const label =
+    button.textContent;
+
+
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    "جارٍ تجهيز PDF...";
 
 
   try {
@@ -3476,479 +3076,12 @@ async function downloadWorkbook() {
       });
 
 
-    const savedMap = {};
+    await downloadWorkbookPdf(
 
+      data.participant,
 
-    (
-      data.saved || []
-    ).forEach(
+      data.saved
 
-      response => {
-
-        savedMap[
-          response.activity_id
-        ] = response;
-
-      }
-
-    );
-
-
-    let output = `
-
-      <!doctype html>
-
-      <html
-        lang="ar"
-        dir="rtl"
-      >
-
-      <meta charset="utf-8">
-
-      <title>
-        دفتر المشارك الكامل
-      </title>
-
-
-      <style>
-
-        body {
-
-          font-family:
-            Arial,
-            sans-serif;
-
-          max-width:
-            900px;
-
-          margin:
-            40px auto;
-
-          line-height:
-            1.8;
-
-          color:
-            #27313D;
-
-        }
-
-        h1,
-        h2,
-        h3 {
-
-          color:
-            #2F4053;
-
-        }
-
-        .box {
-
-          border:
-            1px solid #ddd;
-
-          border-radius:
-            12px;
-
-          padding:
-            16px;
-
-          margin:
-            14px 0;
-
-        }
-
-      </style>
-
-
-      <h1>
-
-        دفتر المشارك الكامل
-
-      </h1>
-
-
-      <p>
-
-        ${escapeHtml(
-          data.participant.name
-        )}
-
-        —
-
-        ${escapeHtml(
-          data.participant.email
-        )}
-
-      </p>
-
-    `;
-
-
-
-    for (
-      const activity
-      of data.activities
-    ) {
-
-
-      const saved =
-
-        savedMap[
-          activity.id
-        ];
-
-
-      if (!saved) {
-
-        continue;
-
-      }
-
-
-      output += `
-
-        <div class="box">
-
-          <h2>
-
-            ${escapeHtml(
-              activity.title
-            )}
-
-          </h2>
-
-      `;
-
-
-
-      if (
-
-        Number(
-          activity.id
-        ) === 1
-
-        &&
-
-        saved.answers?._result
-
-      ) {
-
-
-        const result =
-
-          saved.answers._result;
-
-
-        output += `
-
-          <h3>
-
-            المجموع:
-
-            ${result.total}
-
-            /
-
-            80
-
-          </h3>
-
-        `;
-
-
-
-        result.dimensions.forEach(
-
-          dimension => {
-
-
-            output += `
-
-              <p>
-
-                <b>
-
-                  ${escapeHtml(
-                    dimension.name
-                  )}
-
-                  :
-
-                  ${dimension.score}
-                  /
-                  20
-
-                  —
-
-                  ${escapeHtml(
-                    dimension.label
-                  )}
-
-                </b>
-
-                <br>
-
-                ${escapeHtml(
-                  dimension.advice
-                )}
-
-              </p>
-
-            `;
-
-          }
-
-        );
-
-
-        output += `
-
-          <p>
-
-            <b>
-              أقوى بُعد:
-            </b>
-
-            ${escapeHtml(
-              result.strongest
-            )}
-
-          </p>
-
-
-          <p>
-
-            <b>
-              أضعف بُعد:
-            </b>
-
-            ${escapeHtml(
-              result.weakest
-            )}
-
-          </p>
-
-
-          <h3>
-            خطوتي التالية
-          </h3>
-
-
-          <p>
-
-            <b>
-              أصغر تحسين سأجربه فيه خلال أسبوعين:
-            </b>
-
-            <br>
-
-            ${escapeHtml(
-              saved.answers._next?.improvement || ""
-            )}
-
-          </p>
-
-
-          <p>
-
-            <b>
-              كيف سأعرف أنه نجح؟
-            </b>
-
-            <br>
-
-            ${escapeHtml(
-              saved.answers._next?.measure || ""
-            )}
-
-          </p>
-
-
-          <h3>
-            إجابات الاستبانة
-          </h3>
-
-        `;
-
-
-
-        assessmentQuestions.forEach(
-
-          (
-            question,
-            index
-          ) => {
-
-
-            output += `
-
-              <p>
-
-                ${index + 1}.
-
-                ${escapeHtml(
-                  question
-                )}
-
-                <b>
-
-                  (
-
-                  ${escapeHtml(
-                    saved.answers[
-                      "q" +
-                      (index + 1)
-                    ]
-                  )}
-
-                  /
-
-                  5
-
-                  )
-
-                </b>
-
-              </p>
-
-            `;
-
-          }
-
-        );
-
-
-      } else {
-
-
-        const definition =
-
-          activityDefinitions[
-            activity.id
-          ];
-
-
-        if (definition) {
-
-
-          definition.fields.forEach(
-
-            field => {
-
-
-              output += `
-
-                <p>
-
-                  <b>
-
-                    ${escapeHtml(
-                      field[1]
-                    )}
-
-                    :
-
-                  </b>
-
-                  <br>
-
-                  ${escapeHtml(
-
-                    saved.answers?.[
-                      field[0]
-                    ] || ""
-
-                  )}
-
-                </p>
-
-              `;
-
-            }
-
-          );
-
-        }
-
-      }
-
-
-      output +=
-        "</div>";
-
-    }
-
-
-
-    output += `
-
-      <p>
-
-        تنبيه منهجي:
-        ${escapeHtml(methodNote)}
-
-      </p>
-
-      </html>
-
-    `;
-
-
-
-    const blob =
-
-      new Blob(
-
-        [output],
-
-        {
-
-          type:
-            "text/html;charset=utf-8"
-
-        }
-
-      );
-
-
-
-    const url =
-
-      URL.createObjectURL(
-        blob
-      );
-
-
-
-    const link =
-
-      document.createElement(
-        "a"
-      );
-
-
-    link.href =
-      url;
-
-
-    link.download =
-
-      "دفتر_المشارك_الكامل.html";
-
-
-    document.body.appendChild(
-      link
-    );
-
-
-    link.click();
-
-
-    link.remove();
-
-
-    URL.revokeObjectURL(
-      url
     );
 
 
@@ -3961,6 +3094,17 @@ async function downloadWorkbook() {
       error.message
 
     );
+
+
+  } finally {
+
+
+    button.disabled =
+      false;
+
+
+    button.textContent =
+      label;
 
   }
 
