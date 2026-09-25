@@ -1,0 +1,3138 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="theme-color"
+    content="#2F4053"
+  >
+
+  <title>دفتر المشارك التفاعلي</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    :root {
+      --primary: #2F4053;
+      --primary-dark: #233140;
+      --gold: #7B6F5A;
+      --gold-light: #A6947A;
+      --sand: #F4F1EC;
+      --text: #27313D;
+      --muted: #6B7280;
+      --background: #FAFAF8;
+      --border: #E5E7EB;
+      --white: #FFFFFF;
+      --success: #2F6B54;
+      --danger: #A04444;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: "Tajawal", sans-serif;
+      line-height: 1.75;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: auto;
+      padding: 18px 16px 70px;
+    }
+
+    .hero {
+      background: linear-gradient(
+        135deg,
+        var(--primary-dark),
+        var(--primary)
+      );
+
+      color: white;
+      border-radius: 28px;
+      padding: 28px 24px;
+
+      box-shadow:
+        0 14px 38px
+        rgba(35, 49, 64, 0.12);
+
+      margin-bottom: 16px;
+    }
+
+    .hero small {
+      color: #e7dfd5;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      margin: 6px 0 4px;
+      font-size: clamp(
+        1.55rem,
+        4vw,
+        2.45rem
+      );
+    }
+
+    .hero p {
+      margin: 0;
+      color: #f2eee9;
+    }
+
+    .card {
+      background: var(--white);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius: 20px;
+
+      padding: 20px;
+      margin: 14px 0;
+
+      box-shadow:
+        0 8px 24px
+        rgba(35, 49, 64, 0.05);
+    }
+
+    h2,
+    h3 {
+      color: var(--primary);
+    }
+
+    label {
+      font-weight: 700;
+      display: block;
+      margin: 12px 0 7px;
+    }
+
+    input,
+    textarea {
+
+      width: 100%;
+
+      border:
+        1px solid
+        #d7dce1;
+
+      border-radius: 12px;
+
+      padding: 12px 13px;
+
+      font: inherit;
+
+      background: white;
+
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+
+      outline:
+        2px solid
+        rgba(123, 111, 90, 0.20);
+
+      border-color:
+        var(--gold);
+    }
+
+    .button {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 6px;
+
+      border: none;
+
+      border-radius: 12px;
+
+      padding: 11px 16px;
+
+      background:
+        var(--primary);
+
+      color: white;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      font-family: inherit;
+    }
+
+    .button.secondary {
+      background:
+        var(--gold);
+    }
+
+    .button.outline {
+
+      background: white;
+
+      color:
+        var(--primary);
+
+      border:
+        1px solid
+        var(--border);
+    }
+
+    .button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .muted {
+      color:
+        var(--muted);
+    }
+
+    .error {
+      color:
+        var(--danger);
+
+      font-weight: 700;
+    }
+
+    .success {
+      color:
+        var(--success);
+
+      font-weight: 800;
+    }
+
+    .topbar {
+
+      display: flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+      gap: 10px;
+
+      flex-wrap:
+        wrap;
+    }
+
+    .participant {
+
+      background:
+        var(--sand);
+
+      padding:
+        7px 12px;
+
+      border-radius:
+        999px;
+
+      font-weight:
+        700;
+    }
+
+    .steps {
+
+      display: flex;
+
+      gap: 8px;
+
+      overflow-x: auto;
+
+      padding:
+        10px 0 14px;
+    }
+
+    .step {
+
+      min-width: 46px;
+
+      height: 46px;
+
+      border-radius:
+        50%;
+
+      border:
+        1px solid
+        var(--border);
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      background:
+        white;
+
+      font-weight:
+        800;
+
+      cursor:
+        pointer;
+    }
+
+    .step.current {
+
+      background:
+        var(--primary);
+
+      color:
+        white;
+    }
+
+    .step.done {
+
+      border-color:
+        var(--success);
+
+      color:
+        var(--success);
+    }
+
+    .step.locked {
+
+      opacity:
+        0.35;
+
+      cursor:
+        not-allowed;
+    }
+
+    .notice {
+
+      background:
+        var(--sand);
+
+      border-right:
+        4px solid
+        var(--gold);
+
+      padding:
+        12px 14px;
+
+      border-radius:
+        12px;
+
+      margin-bottom:
+        18px;
+    }
+
+    .question {
+
+      padding:
+        16px 0;
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+    .question:last-child {
+      border-bottom: none;
+    }
+
+    .scale {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(5, 1fr);
+
+      gap: 7px;
+
+      margin-top:
+        10px;
+    }
+
+    .choice {
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        11px;
+
+      padding:
+        9px 6px;
+
+      text-align:
+        center;
+
+      font-weight:
+        500;
+
+      cursor:
+        pointer;
+    }
+
+    .choice input {
+
+      width:
+        auto;
+
+      margin-left:
+        5px;
+    }
+
+    .grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap:
+        10px;
+    }
+
+    .result-card {
+
+      background:
+        var(--sand);
+
+      border-radius:
+        15px;
+
+      padding:
+        15px;
+    }
+
+    .score {
+
+      font-size:
+        2rem;
+
+      font-weight:
+        800;
+
+      color:
+        var(--primary);
+    }
+
+    .bar {
+
+      height:
+        9px;
+
+      border-radius:
+        999px;
+
+      background:
+        #e7e2da;
+
+      overflow:
+        hidden;
+
+      margin:
+        8px 0;
+    }
+
+    .bar span {
+
+      display:
+        block;
+
+      height:
+        100%;
+
+      background:
+        var(--gold);
+    }
+
+    .activity-number {
+
+      color:
+        var(--gold);
+
+      font-weight:
+        800;
+    }
+
+    .actions {
+
+      display:
+        flex;
+
+      gap:
+        8px;
+
+      flex-wrap:
+        wrap;
+
+      margin-top:
+        16px;
+    }
+
+    .method-note {
+
+      color:
+        var(--muted);
+
+      font-size:
+        0.92rem;
+
+      margin-top:
+        18px;
+    }
+
+    @media (
+      max-width: 700px
+    ) {
+
+      .grid,
+      .scale {
+
+        grid-template-columns:
+          1fr;
+      }
+
+      .choice {
+        text-align:
+          right;
+      }
+
+      .topbar {
+
+        align-items:
+          stretch;
+      }
+
+      .actions .button,
+      .topbar .button {
+
+        width:
+          100%;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<main class="container">
+
+  <header class="hero">
+
+    <small>
+      دفتر المشارك الإلكتروني
+    </small>
+
+    <h1>
+      رشاقة الأداء المؤسسي
+      في قطاع الأوقاف
+    </h1>
+
+    <p>
+      من المهام اليومية
+      إلى الأثر المستدام
+    </p>
+
+  </header>
+
+
+  <!-- شاشة الدخول -->
+
+  <section
+    id="loginScreen"
+    class="card"
+  >
+
+    <h2>
+      ابدأ دفتر الأنشطة
+    </h2>
+
+    <p class="muted">
+
+      سجّل بياناتك مرة واحدة،
+      ثم ستظهر لك الأنشطة
+      التي يفتحها المدرب.
+
+    </p>
+
+
+    <label for="participantName">
+
+      الاسم *
+
+    </label>
+
+    <input
+      id="participantName"
+      autocomplete="name"
+      placeholder="اكتب اسمك"
+    >
+
+
+    <label for="participantEmail">
+
+      البريد الإلكتروني *
+
+    </label>
+
+    <input
+      id="participantEmail"
+      type="email"
+      autocomplete="email"
+      placeholder="name@example.com"
+    >
+
+
+    <div class="actions">
+
+      <button
+        id="loginButton"
+        class="button"
+        type="button"
+      >
+
+        دخول الدفتر
+
+      </button>
+
+    </div>
+
+
+    <p
+      id="loginMessage"
+      class="muted"
+    ></p>
+
+  </section>
+
+
+
+  <!-- التطبيق -->
+
+  <section
+    id="workbookApp"
+    class="hidden"
+  >
+
+
+    <div class="topbar">
+
+      <div
+        id="currentParticipant"
+        class="participant"
+      ></div>
+
+
+      <div class="actions">
+
+        <button
+          id="refreshButton"
+          class="button outline"
+          type="button"
+        >
+
+          تحديث
+
+        </button>
+
+
+        <button
+          id="downloadButton"
+          class="button secondary"
+          type="button"
+        >
+
+          تحميل الدفتر الكامل
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <nav
+      id="activitySteps"
+      class="steps"
+    ></nav>
+
+
+
+    <section class="card">
+
+      <div
+        id="activityStatus"
+        class="notice"
+      ></div>
+
+
+      <div
+        id="activityContent"
+      ></div>
+
+    </section>
+
+
+  </section>
+
+
+</main>
+
+
+<script>
+
+/* ========================================
+
+   الاتصال بخلفية Supabase
+
+   لا يوجد هنا مفتاح سري.
+
+======================================== */
+
+
+const API_URL =
+
+  "https://uqqjkfsgcxxrrrneixeh.supabase.co/functions/v1/workbook-api";
+
+
+
+/* ========================================
+
+   أسئلة استبانة الرشاقة
+
+======================================== */
+
+
+const assessmentQuestions = [
+
+  "أعرف القيمة التي يقدمها كل عمل متكرر أقوم به.",
+
+  "أولويات عملي قليلة وواضحة ومتفق عليها مع مسؤولي.",
+
+  "أعرف كيف يُقاس نجاح عملي بما يتغير، لا بما يُنجز فقط.",
+
+  "أستطيع أن أشرح لزميل جديد لماذا يقوم فريقنا بمهامه الأساسية.",
+
+  "ألاحظ مبكرًا التغيرات التي تؤثر في عملي: احتياجات المستفيدين والظروف والموارد.",
+
+  "أعدّل طريقة التنفيذ عندما يتغير الواقع دون أن أفقد الغاية.",
+
+  "أعرف حدود صلاحيتي في تعديل خطة العمل، ومن يقرر فيما يتجاوزها.",
+
+  "يتخذ فريقنا قرارات التعديل في وقتها، لا بعد فوات الأوان.",
+
+  "أعرف ما يحتاجه الآخرون مني، ومتى يحتاجونه.",
+
+  "تصلني المعلومات والقرارات التي أحتاجها من الوحدات الأخرى في وقتها.",
+
+  "أعرف أين ينتظر العمل غالبًا في المسار الذي أشارك فيه.",
+
+  "عندما يتعثر عمل مشترك، نبحث عن موضع توقف التدفق قبل البحث عن المقصّر.",
+
+  "أراجع ما حدث بعد المهام المهمة أو المشكلات مراجعة قصيرة.",
+
+  "عندما تتكرر مشكلة، أسعى إلى تغيير الإجراء لا إلى معالجة الحالة فقط.",
+
+  "أجرّب التحسينات على نطاق صغير قبل تعميمها.",
+
+  "أشارك زملائي ما تعلمته من الأخطاء والتجارب."
+
+];
+
+
+
+/* ========================================
+
+   الأنشطة 2 إلى 8
+
+======================================== */
+
+
+const activityDefinitions = {
+
+
+  2: {
+
+    title:
+      "لكي ماذا؟",
+
+    help:
+      "اختر مهمة متكررة في عملك، ثم تتبّع الغاية التي تقود إليها.",
+
+    fields: [
+
+      [
+        "task",
+        "المهمة التي أقوم بها"
+      ],
+
+      [
+        "why",
+        "أقوم بها لكي"
+      ],
+
+      [
+        "change",
+        "إذا نجحت جيدًا، فما الذي سيتغير؟"
+      ],
+
+      [
+        "beneficiary",
+        "من المستفيد من هذا التغيير؟"
+      ]
+
+    ]
+
+  },
+
+
+  3: {
+
+    title:
+      "أين توقف التدفق؟",
+
+    help:
+      "انظر إلى رحلة العمل كاملة قبل القفز إلى الحل.",
+
+    fields: [
+
+      [
+        "start",
+        "أين يبدأ العمل؟"
+      ],
+
+      [
+        "move",
+        "إلى من ينتقل؟"
+      ],
+
+      [
+        "wait",
+        "أين ينتظر غالبًا؟"
+      ],
+
+      [
+        "decision",
+        "أين يصدر القرار؟"
+      ],
+
+      [
+        "novalue",
+        "ما الخطوة التي لا تضيف قيمة واضحة؟"
+      ],
+
+      [
+        "improve",
+        "أصغر تحسين يمكن أن يقلل الانتظار أو يوضح المسار"
+      ]
+
+    ]
+
+  },
+
+
+  4: {
+
+    title:
+      "ما الثابت وما الذي يمكن تعديله؟",
+
+    help:
+      "افصل بين الغاية والطريق عندما تتغير الظروف.",
+
+    fields: [
+
+      [
+        "goal",
+        "ما الهدف الثابت في موقف من واقعك؟"
+      ],
+
+      [
+        "reality",
+        "ما الذي تغير في الواقع؟"
+      ],
+
+      [
+        "adjust",
+        "ما الذي يمكن تعديله دون فقدان الوجهة؟"
+      ]
+
+    ]
+
+  },
+
+
+  5: {
+
+    title:
+      "من المهمة إلى الأثر",
+
+    help:
+      "انتقل خطوة خطوة من الفعل إلى القيمة.",
+
+    fields: [
+
+      [
+        "task",
+        "المهمة — ماذا أفعل؟"
+      ],
+
+      [
+        "output",
+        "المخرج — ماذا ينتج مباشرة؟"
+      ],
+
+      [
+        "outcome",
+        "النتيجة — ماذا يتغير بسبب ذلك؟"
+      ],
+
+      [
+        "impact",
+        "الأثر — ما القيمة الأبعد أو الأكثر استدامة؟"
+      ],
+
+      [
+        "beneficiary",
+        "من المستفيد؟"
+      ],
+
+      [
+        "stop",
+        "لو توقفت هذه المهمة شهرًا كاملًا، ماذا سيتأثر؟"
+      ],
+
+      [
+        "value",
+        "ما الذي يخبرني به ذلك عن قيمة المهمة أو طريقة تنفيذها؟"
+      ]
+
+    ]
+
+  },
+
+
+  6: {
+
+    title:
+      "ماذا تعلمنا؟ وماذا سنغير؟",
+
+    help:
+      "التعلم الحقيقي يظهر عندما يتغير شيء في طريقة العمل لاحقًا.",
+
+    fields: [
+
+      [
+        "happened",
+        "ماذا حدث؟"
+      ],
+
+      [
+        "why",
+        "لماذا حدث؟"
+      ],
+
+      [
+        "learned",
+        "ماذا تعلمنا؟"
+      ],
+
+      [
+        "change",
+        "ماذا سنغير؟"
+      ],
+
+      [
+        "owner",
+        "من المسؤول؟ ومتى؟"
+      ]
+
+    ]
+
+  },
+
+
+  7: {
+
+    title:
+      "عيادة الرشاقة",
+
+    help:
+      "ابحث عن أصغر تحسين قابل للتجربة.",
+
+    fields: [
+
+      [
+        "practice",
+        "الممارسة التي سأراجعها"
+      ],
+
+      [
+        "problem",
+        "المشكلة الأقرب: وضوح / أولوية / معلومة / قرار / تنسيق / تعلم / أثر"
+      ],
+
+      [
+        "small",
+        "أصغر تحسين يمكن تجربته"
+      ],
+
+      [
+        "with",
+        "مع من أحتاج إلى العمل؟"
+      ],
+
+      [
+        "when",
+        "متى سأجربه؟"
+      ],
+
+      [
+        "measure",
+        "كيف سأعرف أنه نجح؟"
+      ]
+
+    ]
+
+  },
+
+
+  8: {
+
+    title:
+      "فكرة واحدة سأبدأ بها بعد اللقاء",
+
+    help:
+      "اختم اللقاء بخطوة عملية واحدة.",
+
+    fields: [
+
+      [
+        "start",
+        "سأبدأ بـ"
+      ],
+
+      [
+        "change",
+        "لأنني أريد أن يتغير"
+      ]
+
+    ]
+
+  }
+
+};
+
+
+
+/* ========================================
+
+   الحالة العامة
+
+======================================== */
+
+
+let accessToken =
+
+  localStorage.getItem(
+    "waqf_workbook_token"
+  ) || "";
+
+
+let appState = null;
+
+
+let currentActivity = 1;
+
+
+
+const getElement = id =>
+
+  document.getElementById(id);
+
+
+
+/* ========================================
+
+   تنظيف النصوص
+
+======================================== */
+
+
+function escapeHtml(value) {
+
+  return String(
+    value ?? ""
+  )
+
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+
+  .replaceAll(
+    '"',
+    "&quot;"
+  );
+
+}
+
+
+
+/* ========================================
+
+   استدعاء API
+
+======================================== */
+
+
+async function apiCall(body) {
+
+
+  const response = await fetch(
+
+    API_URL,
+
+    {
+
+      method:
+        "POST",
+
+      headers: {
+
+        "Content-Type":
+          "application/json"
+
+      },
+
+      body:
+        JSON.stringify(body)
+
+    }
+
+  );
+
+
+  let data = {};
+
+
+  try {
+
+    data =
+      await response.json();
+
+  } catch {}
+
+
+  if (!response.ok) {
+
+    throw new Error(
+
+      data.error ||
+
+      data.message ||
+
+      "تعذر الاتصال بالنظام."
+
+    );
+
+  }
+
+
+  return data;
+
+}
+
+
+
+/* ========================================
+
+   تفسير الدرجات
+
+======================================== */
+
+
+function interpretScore(score) {
+
+
+  if (score >= 17) {
+
+    return [
+
+      "ممارسة راسخة",
+
+      "حافظ عليها، وانقلها إلى زملائك وفريقك."
+
+    ];
+
+  }
+
+
+  if (score >= 12) {
+
+    return [
+
+      "ممارسة موجودة لكنها غير منتظمة",
+
+      "اجعلها عادة: موعد ثابت، ومسؤول واضح، وأداة بسيطة."
+
+    ];
+
+  }
+
+
+  return [
+
+    "فرصة تحسين أولى",
+
+    "ابدأ منها في عيادة الرشاقة بأصغر تحسين ممكن."
+
+  ];
+
+}
+
+
+
+/* ========================================
+
+   حساب الاستبانة
+
+======================================== */
+
+
+function calculateAssessment(
+  answers
+) {
+
+
+  const values = [];
+
+
+  for (
+    let i = 1;
+    i <= 16;
+    i++
+  ) {
+
+    values.push(
+
+      Number(
+        answers["q" + i]
+      )
+
+    );
+
+  }
+
+
+  const dimensionNames = [
+
+    "الوضوح",
+
+    "المرونة",
+
+    "التكامل",
+
+    "التعلّم"
+
+  ];
+
+
+  const dimensions =
+
+    dimensionNames.map(
+
+      (
+        name,
+        index
+      ) => {
+
+
+        const score =
+
+          values
+
+          .slice(
+            index * 4,
+            index * 4 + 4
+          )
+
+          .reduce(
+            (a, b) => a + b,
+            0
+          );
+
+
+        const [
+
+          label,
+
+          advice
+
+        ] = interpretScore(
+          score
+        );
+
+
+        return {
+
+          name,
+
+          score,
+
+          label,
+
+          advice
+
+        };
+
+      }
+
+    );
+
+
+  const sorted =
+
+    [...dimensions]
+
+    .sort(
+      (a, b) =>
+        b.score - a.score
+    );
+
+
+  return {
+
+    total:
+
+      dimensions.reduce(
+        (total, item) =>
+          total + item.score,
+        0
+      ),
+
+    maxTotal:
+      80,
+
+    dimensions,
+
+    strongest:
+      sorted[0].name,
+
+    weakest:
+      sorted[
+        sorted.length - 1
+      ].name
+
+  };
+
+}
+
+
+
+/* ========================================
+
+   تسجيل المشارك
+
+======================================== */
+
+
+async function login() {
+
+
+  const name =
+
+    getElement(
+      "participantName"
+    ).value.trim();
+
+
+  const email =
+
+    getElement(
+      "participantEmail"
+    ).value.trim();
+
+
+  const message =
+
+    getElement(
+      "loginMessage"
+    );
+
+
+  if (
+    !name ||
+    !email
+  ) {
+
+    message.className =
+      "error";
+
+    message.textContent =
+
+      "الاسم والبريد الإلكتروني مطلوبان.";
+
+    return;
+
+  }
+
+
+  message.className =
+    "muted";
+
+
+  message.textContent =
+    "جارٍ الدخول...";
+
+
+  try {
+
+
+    const result =
+
+      await apiCall({
+
+        action:
+          "register",
+
+        name,
+
+        email
+
+      });
+
+
+    accessToken =
+      result.token;
+
+
+    localStorage.setItem(
+
+      "waqf_workbook_token",
+
+      accessToken
+
+    );
+
+
+    await loadStatus();
+
+
+  } catch (error) {
+
+
+    message.className =
+      "error";
+
+
+    message.textContent =
+
+      "تعذر الدخول: " +
+      error.message;
+
+  }
+
+}
+
+
+
+/* ========================================
+
+   تحميل حالة المشارك
+
+======================================== */
+
+
+async function loadStatus() {
+
+
+  try {
+
+
+    appState =
+
+      await apiCall({
+
+        action:
+          "status",
+
+        token:
+          accessToken
+
+      });
+
+
+    getElement(
+      "loginScreen"
+    ).classList.add(
+      "hidden"
+    );
+
+
+    getElement(
+      "workbookApp"
+    ).classList.remove(
+      "hidden"
+    );
+
+
+    getElement(
+      "currentParticipant"
+    ).textContent =
+
+      appState.participant.name;
+
+
+    currentActivity =
+
+      Number(
+
+        appState.current_activity
+        || 1
+
+      );
+
+
+    render();
+
+
+  } catch (error) {
+
+
+    localStorage.removeItem(
+      "waqf_workbook_token"
+    );
+
+
+    accessToken = "";
+
+
+    getElement(
+      "workbookApp"
+    ).classList.add(
+      "hidden"
+    );
+
+
+    getElement(
+      "loginScreen"
+    ).classList.remove(
+      "hidden"
+    );
+
+
+    getElement(
+      "loginMessage"
+    ).className =
+      "error";
+
+
+    getElement(
+      "loginMessage"
+    ).textContent =
+
+      "تعذر استعادة الجلسة. سجّل الدخول مرة أخرى.";
+
+  }
+
+}
+
+
+
+/* ========================================
+
+   الإجابات المحفوظة
+
+======================================== */
+
+
+function savedResponses() {
+
+
+  const map = {};
+
+
+  (
+    appState.saved || []
+  ).forEach(
+
+    response => {
+
+      map[
+        response.activity_id
+      ] = response;
+
+    }
+
+  );
+
+
+  return map;
+
+}
+
+
+
+/* ========================================
+
+   عرض الأنشطة
+
+======================================== */
+
+
+function render() {
+
+
+  const saved =
+    savedResponses();
+
+
+  const steps =
+
+    getElement(
+      "activitySteps"
+    );
+
+
+  steps.innerHTML = "";
+
+
+  (
+    appState.activities || []
+  ).forEach(
+
+    activity => {
+
+
+      const button =
+
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.className =
+        "step";
+
+
+      if (
+        Number(activity.id) ===
+        Number(currentActivity)
+      ) {
+
+        button.classList.add(
+          "current"
+        );
+
+      }
+
+
+      if (
+        saved[activity.id]
+      ) {
+
+        button.classList.add(
+          "done"
+        );
+
+      }
+
+
+      if (
+        !activity.is_open
+      ) {
+
+        button.classList.add(
+          "locked"
+        );
+
+      }
+
+
+      button.textContent =
+
+        saved[activity.id]
+        ? "✓"
+        : activity.id;
+
+
+      button.title =
+        activity.title;
+
+
+      if (
+        activity.is_open
+      ) {
+
+
+        button.onclick = () => {
+
+
+          currentActivity =
+            Number(activity.id);
+
+
+          render();
+
+        };
+
+      }
+
+
+      steps.appendChild(
+        button
+      );
+
+    }
+
+  );
+
+
+  const activity =
+
+    (
+      appState.activities || []
+    )
+
+    .find(
+
+      item =>
+
+        Number(item.id) ===
+        Number(currentActivity)
+
+    );
+
+
+  if (!activity) {
+
+    getElement(
+      "activityContent"
+    ).innerHTML =
+
+      "<p>لا يوجد نشاط متاح حاليًا.</p>";
+
+    return;
+
+  }
+
+
+  getElement(
+    "activityStatus"
+  ).innerHTML =
+
+    activity.is_open
+
+    ? "<b>النشاط " +
+      activity.id +
+      " مفتوح الآن.</b>"
+
+    : "هذا النشاط غير مفتوح حاليًا. انتظر توجيه المدرب.";
+
+
+
+  if (
+    Number(activity.id) === 1
+  ) {
+
+
+    renderAssessment(
+      saved[1]
+    );
+
+
+  } else {
+
+
+    renderRegularActivity(
+
+      activity,
+
+      saved[activity.id]
+
+    );
+
+  }
+
+}
+
+
+
+/* ========================================
+
+   عرض الاستبانة
+
+======================================== */
+
+
+function renderAssessment(
+  saved
+) {
+
+
+  const existing =
+
+    saved?.answers || {};
+
+
+  if (
+    existing._result
+  ) {
+
+
+    renderAssessmentResult(
+      existing._result
+    );
+
+
+    return;
+
+  }
+
+
+  const labels = [
+
+    "نادرًا",
+
+    "قليلًا",
+
+    "أحيانًا",
+
+    "غالبًا",
+
+    "دائمًا"
+
+  ];
+
+
+  let html = `
+
+    <div class="activity-number">
+      المهمة الأولى
+    </div>
+
+    <h2>
+      استبانة رشاقة الأداء الفردية
+    </h2>
+
+    <p class="muted">
+
+      أين أقف في الوضوح
+      والمرونة والتكامل والتعلّم؟
+
+      اختر ما يصف ممارستك
+      وبيئة عملك المباشرة
+      خلال الأشهر الثلاثة الأخيرة.
+
+    </p>
+
+  `;
+
+
+
+  assessmentQuestions.forEach(
+
+    (
+      question,
+      index
+    ) => {
+
+
+      const number =
+        index + 1;
+
+
+      html += `
+
+        <div class="question">
+
+          <b>
+
+            ${number}.
+            ${escapeHtml(question)}
+
+          </b>
+
+
+          <div class="scale">
+
+      `;
+
+
+
+      labels.forEach(
+
+        (
+          label,
+          choiceIndex
+        ) => {
+
+
+          const value =
+            choiceIndex + 1;
+
+
+          const checked =
+
+            Number(
+              existing[
+                "q" + number
+              ]
+            ) === value
+
+            ? "checked"
+
+            : "";
+
+
+          html += `
+
+            <label class="choice">
+
+              <input
+                type="radio"
+                name="q${number}"
+                value="${value}"
+                ${checked}
+              >
+
+              ${value}
+              —
+              ${label}
+
+            </label>
+
+          `;
+
+        }
+
+      );
+
+
+      html += `
+
+          </div>
+
+        </div>
+
+      `;
+
+    }
+
+  );
+
+
+  html += `
+
+    <div class="actions">
+
+      <button
+        id="saveAssessmentButton"
+        class="button"
+        type="button"
+      >
+
+        احسب نتيجتي واحفظها
+
+      </button>
+
+    </div>
+
+
+    <p
+      id="saveMessage"
+    ></p>
+
+
+    <p class="method-note">
+
+      أداة تأمل ذاتي وليست
+      مقياسًا محكمًا،
+      ولا تستخدم لتقييم الأشخاص
+      أو مقارنة الجهات
+      أو اتخاذ قرارات إدارية.
+
+    </p>
+
+  `;
+
+
+  getElement(
+    "activityContent"
+  ).innerHTML =
+    html;
+
+
+  getElement(
+    "saveAssessmentButton"
+  ).onclick =
+    saveAssessment;
+
+}
+
+
+
+/* ========================================
+
+   حفظ الاستبانة
+
+======================================== */
+
+
+async function saveAssessment() {
+
+
+  const answers = {};
+
+
+  const message =
+
+    getElement(
+      "saveMessage"
+    );
+
+
+  for (
+    let i = 1;
+    i <= 16;
+    i++
+  ) {
+
+
+    const selected =
+
+      document.querySelector(
+
+        `input[name="q${i}"]:checked`
+
+      );
+
+
+    if (!selected) {
+
+
+      message.className =
+        "error";
+
+
+      message.textContent =
+
+        "أجب عن جميع العبارات أولًا.";
+
+
+      return;
+
+    }
+
+
+    answers[
+      "q" + i
+    ] =
+
+      Number(
+        selected.value
+      );
+
+  }
+
+
+  const result =
+
+    calculateAssessment(
+      answers
+    );
+
+
+  answers._result =
+    result;
+
+
+  message.className =
+    "muted";
+
+
+  message.textContent =
+    "جارٍ الحفظ...";
+
+
+  try {
+
+
+    await apiCall({
+
+      action:
+        "save",
+
+      token:
+        accessToken,
+
+      activity_id:
+        1,
+
+      answers
+
+    });
+
+
+    await loadStatus();
+
+
+  } catch (error) {
+
+
+    message.className =
+      "error";
+
+
+    message.textContent =
+
+      "تعذر الحفظ: " +
+      error.message;
+
+  }
+
+}
+
+
+
+/* ========================================
+
+   شاشة نتيجة الاستبانة
+
+======================================== */
+
+
+function renderAssessmentResult(
+  result
+) {
+
+
+  getElement(
+    "activityStatus"
+  ).innerHTML =
+
+    "<b>اكتملت المهمة الأولى ✓</b>";
+
+
+
+  const cards =
+
+    result.dimensions
+
+    .map(
+
+      item => `
+
+        <div class="result-card">
+
+          <b>
+            ${escapeHtml(item.name)}
+          </b>
+
+
+          <div class="score">
+
+            ${item.score}
+            /
+            20
+
+          </div>
+
+
+          <div class="bar">
+
+            <span
+              style="
+                width:
+                ${(item.score / 20) * 100}%
+              "
+            ></span>
+
+          </div>
+
+
+          <b>
+
+            ${escapeHtml(
+              item.label
+            )}
+
+          </b>
+
+
+          <div class="muted">
+
+            ${escapeHtml(
+              item.advice
+            )}
+
+          </div>
+
+        </div>
+
+      `
+
+    )
+
+    .join("");
+
+
+
+  getElement(
+    "activityContent"
+  ).innerHTML = `
+
+
+    <h2>
+      نتيجتك في استبانة الرشاقة
+    </h2>
+
+
+    <div
+      class="result-card"
+      style="text-align:center"
+    >
+
+
+      <div class="score">
+
+        ${result.total}
+        /
+        80
+
+      </div>
+
+
+      <div>
+
+        المجموع الكلي
+
+      </div>
+
+
+    </div>
+
+
+
+    <div
+      class="grid"
+      style="margin-top:10px"
+    >
+
+      ${cards}
+
+    </div>
+
+
+
+    <div
+      class="notice"
+      style="margin-top:14px"
+    >
+
+      <b>
+        أقوى بُعد:
+      </b>
+
+      ${escapeHtml(
+        result.strongest
+      )}
+
+      <br>
+
+      <b>
+        أضعف بُعد:
+      </b>
+
+      ${escapeHtml(
+        result.weakest
+      )}
+
+    </div>
+
+
+    <p class="muted">
+
+      تم حفظ إجاباتك
+      وتحليل النتيجة.
+
+    </p>
+
+  `;
+
+}
+
+
+
+/* ========================================
+
+   عرض الأنشطة 2–8
+
+======================================== */
+
+
+function renderRegularActivity(
+  activity,
+  saved
+) {
+
+
+  const definition =
+
+    activityDefinitions[
+      activity.id
+    ];
+
+
+  if (!definition) {
+
+
+    getElement(
+      "activityContent"
+    ).innerHTML =
+
+      "<p class='error'>تعذر العثور على تعريف النشاط.</p>";
+
+
+    return;
+
+  }
+
+
+  const existing =
+
+    saved?.answers || {};
+
+
+  let html = `
+
+    <div class="activity-number">
+
+      النشاط
+      ${activity.id}
+
+    </div>
+
+
+    <h2>
+
+      ${escapeHtml(
+        definition.title
+      )}
+
+    </h2>
+
+
+    <p class="muted">
+
+      ${escapeHtml(
+        definition.help
+      )}
+
+    </p>
+
+  `;
+
+
+
+  definition.fields.forEach(
+
+    field => {
+
+
+      html += `
+
+        <label
+          for="field_${field[0]}"
+        >
+
+          ${escapeHtml(
+            field[1]
+          )}
+
+        </label>
+
+
+        <textarea
+          id="field_${field[0]}"
+          ${activity.is_open
+            ? ""
+            : "disabled"}
+        >${escapeHtml(
+          existing[
+            field[0]
+          ] || ""
+        )}</textarea>
+
+      `;
+
+    }
+
+  );
+
+
+  html += `
+
+    <div class="actions">
+
+      <button
+        id="saveRegularButton"
+        class="button"
+        type="button"
+
+        ${activity.is_open
+          ? ""
+          : "disabled"}
+      >
+
+        ${saved
+          ? "تحديث المشاركة"
+          : "حفظ وإرسال"}
+
+      </button>
+
+    </div>
+
+
+    <p
+      id="saveMessage"
+    ></p>
+
+  `;
+
+
+  getElement(
+    "activityContent"
+  ).innerHTML =
+    html;
+
+
+  if (
+    activity.is_open
+  ) {
+
+
+    getElement(
+      "saveRegularButton"
+    ).onclick = () =>
+
+      saveRegularActivity(
+        activity.id
+      );
+
+  }
+
+}
+
+
+
+/* ========================================
+
+   حفظ نشاط عادي
+
+======================================== */
+
+
+async function saveRegularActivity(
+  activityId
+) {
+
+
+  const definition =
+
+    activityDefinitions[
+      activityId
+    ];
+
+
+  const answers = {};
+
+
+  definition.fields.forEach(
+
+    field => {
+
+
+      answers[
+        field[0]
+      ] =
+
+        getElement(
+          "field_" +
+          field[0]
+        ).value.trim();
+
+    }
+
+  );
+
+
+  const message =
+
+    getElement(
+      "saveMessage"
+    );
+
+
+  message.className =
+    "muted";
+
+
+  message.textContent =
+    "جارٍ الحفظ...";
+
+
+  try {
+
+
+    await apiCall({
+
+      action:
+        "save",
+
+      token:
+        accessToken,
+
+      activity_id:
+        activityId,
+
+      answers
+
+    });
+
+
+    message.className =
+      "success";
+
+
+    message.textContent =
+      "✓ تم الحفظ";
+
+
+    await loadStatus();
+
+
+  } catch (error) {
+
+
+    message.className =
+      "error";
+
+
+    message.textContent =
+
+      "تعذر الحفظ: " +
+      error.message;
+
+  }
+
+}
+
+
+
+/* ========================================
+
+   تحميل الدفتر الكامل
+
+======================================== */
+
+
+async function downloadWorkbook() {
+
+
+  try {
+
+
+    const data =
+
+      await apiCall({
+
+        action:
+          "status",
+
+        token:
+          accessToken
+
+      });
+
+
+    const savedMap = {};
+
+
+    (
+      data.saved || []
+    ).forEach(
+
+      response => {
+
+        savedMap[
+          response.activity_id
+        ] = response;
+
+      }
+
+    );
+
+
+    let output = `
+
+      <!doctype html>
+
+      <html
+        lang="ar"
+        dir="rtl"
+      >
+
+      <meta charset="utf-8">
+
+      <title>
+        دفتر المشارك الكامل
+      </title>
+
+
+      <style>
+
+        body {
+
+          font-family:
+            Arial,
+            sans-serif;
+
+          max-width:
+            900px;
+
+          margin:
+            40px auto;
+
+          line-height:
+            1.8;
+
+          color:
+            #27313D;
+
+        }
+
+        h1,
+        h2,
+        h3 {
+
+          color:
+            #2F4053;
+
+        }
+
+        .box {
+
+          border:
+            1px solid #ddd;
+
+          border-radius:
+            12px;
+
+          padding:
+            16px;
+
+          margin:
+            14px 0;
+
+        }
+
+      </style>
+
+
+      <h1>
+
+        دفتر المشارك الكامل
+
+      </h1>
+
+
+      <p>
+
+        ${escapeHtml(
+          data.participant.name
+        )}
+
+        —
+
+        ${escapeHtml(
+          data.participant.email
+        )}
+
+      </p>
+
+    `;
+
+
+
+    for (
+      const activity
+      of data.activities
+    ) {
+
+
+      const saved =
+
+        savedMap[
+          activity.id
+        ];
+
+
+      if (!saved) {
+
+        continue;
+
+      }
+
+
+      output += `
+
+        <div class="box">
+
+          <h2>
+
+            ${escapeHtml(
+              activity.title
+            )}
+
+          </h2>
+
+      `;
+
+
+
+      if (
+
+        Number(
+          activity.id
+        ) === 1
+
+        &&
+
+        saved.answers?._result
+
+      ) {
+
+
+        const result =
+
+          saved.answers._result;
+
+
+        output += `
+
+          <h3>
+
+            المجموع:
+
+            ${result.total}
+
+            /
+
+            80
+
+          </h3>
+
+        `;
+
+
+
+        result.dimensions.forEach(
+
+          dimension => {
+
+
+            output += `
+
+              <p>
+
+                <b>
+
+                  ${escapeHtml(
+                    dimension.name
+                  )}
+
+                  :
+
+                  ${dimension.score}
+                  /
+                  20
+
+                  —
+
+                  ${escapeHtml(
+                    dimension.label
+                  )}
+
+                </b>
+
+                <br>
+
+                ${escapeHtml(
+                  dimension.advice
+                )}
+
+              </p>
+
+            `;
+
+          }
+
+        );
+
+
+        output += `
+
+          <p>
+
+            <b>
+              أقوى بُعد:
+            </b>
+
+            ${escapeHtml(
+              result.strongest
+            )}
+
+          </p>
+
+
+          <p>
+
+            <b>
+              أضعف بُعد:
+            </b>
+
+            ${escapeHtml(
+              result.weakest
+            )}
+
+          </p>
+
+
+          <h3>
+            إجابات الاستبانة
+          </h3>
+
+        `;
+
+
+
+        assessmentQuestions.forEach(
+
+          (
+            question,
+            index
+          ) => {
+
+
+            output += `
+
+              <p>
+
+                ${index + 1}.
+
+                ${escapeHtml(
+                  question
+                )}
+
+                <b>
+
+                  (
+
+                  ${escapeHtml(
+                    saved.answers[
+                      "q" +
+                      (index + 1)
+                    ]
+                  )}
+
+                  /
+
+                  5
+
+                  )
+
+                </b>
+
+              </p>
+
+            `;
+
+          }
+
+        );
+
+
+      } else {
+
+
+        const definition =
+
+          activityDefinitions[
+            activity.id
+          ];
+
+
+        if (definition) {
+
+
+          definition.fields.forEach(
+
+            field => {
+
+
+              output += `
+
+                <p>
+
+                  <b>
+
+                    ${escapeHtml(
+                      field[1]
+                    )}
+
+                    :
+
+                  </b>
+
+                  <br>
+
+                  ${escapeHtml(
+
+                    saved.answers?.[
+                      field[0]
+                    ] || ""
+
+                  )}
+
+                </p>
+
+              `;
+
+            }
+
+          );
+
+        }
+
+      }
+
+
+      output +=
+        "</div>";
+
+    }
+
+
+
+    output += `
+
+      <p>
+
+        تنبيه منهجي:
+        أداة التأمل الذاتي
+        ليست مقياسًا محكمًا،
+        ولا تستخدم لتقييم الأشخاص
+        أو مقارنة الجهات
+        أو اتخاذ قرارات إدارية.
+
+      </p>
+
+      </html>
+
+    `;
+
+
+
+    const blob =
+
+      new Blob(
+
+        [output],
+
+        {
+
+          type:
+            "text/html;charset=utf-8"
+
+        }
+
+      );
+
+
+
+    const url =
+
+      URL.createObjectURL(
+        blob
+      );
+
+
+
+    const link =
+
+      document.createElement(
+        "a"
+      );
+
+
+    link.href =
+      url;
+
+
+    link.download =
+
+      "دفتر_المشارك_الكامل.html";
+
+
+    document.body.appendChild(
+      link
+    );
+
+
+    link.click();
+
+
+    link.remove();
+
+
+    URL.revokeObjectURL(
+      url
+    );
+
+
+  } catch (error) {
+
+
+    alert(
+
+      "تعذر تحميل الدفتر: " +
+      error.message
+
+    );
+
+  }
+
+}
+
+
+
+/* ========================================
+
+   الأزرار
+
+======================================== */
+
+
+getElement(
+  "loginButton"
+).onclick =
+  login;
+
+
+getElement(
+  "refreshButton"
+).onclick =
+  loadStatus;
+
+
+getElement(
+  "downloadButton"
+).onclick =
+  downloadWorkbook;
+
+
+
+getElement(
+  "participantEmail"
+).addEventListener(
+
+  "keydown",
+
+  event => {
+
+    if (
+      event.key === "Enter"
+    ) {
+
+      login();
+
+    }
+
+  }
+
+);
+
+
+
+/* ========================================
+
+   استعادة الجلسة تلقائيًا
+
+======================================== */
+
+
+if (
+  accessToken
+) {
+
+  loadStatus();
+
+}
+
+
+</script>
+
+
+</body>
+</html>
