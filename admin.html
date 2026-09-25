@@ -1117,6 +1117,44 @@ ${escapeHtml(dimension.label)}
 );
 
 
+const next =
+response.answers._next;
+
+
+if(
+next?.improvement ||
+next?.measure
+){
+
+answers += `
+
+<div class="answer">
+
+<b>
+أصغر تحسين خلال أسبوعين
+</b>
+
+<br>
+
+${escapeHtml(next.improvement || "")}
+
+<br>
+
+<b>
+مؤشر النجاح
+</b>
+
+<br>
+
+${escapeHtml(next.measure || "")}
+
+</div>
+
+`;
+
+}
+
+
 }else{
 
 const fields =

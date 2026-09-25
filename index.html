@@ -476,6 +476,46 @@
         var(--gold);
     }
 
+    .bar span.band-high {
+      background: var(--primary);
+    }
+
+    .bar span.band-mid {
+      background: var(--gold-light);
+    }
+
+    .bar span.band-low {
+      background: #cbbfae;
+    }
+
+    .dimension-title {
+      margin: 22px 0 0;
+      padding: 8px 12px;
+      background: var(--sand);
+      border-radius: 10px;
+      font-size: 1.05rem;
+    }
+
+    .key-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    .key-table th,
+    .key-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: right;
+      vertical-align: top;
+    }
+
+    .key-table th {
+      background: var(--primary);
+      color: white;
+    }
+
     .activity-number {
 
       color:
@@ -774,6 +814,72 @@ const assessmentQuestions = [
   "أشارك زملائي ما تعلمته من الأخطاء والتجارب."
 
 ];
+
+
+
+/* ========================================
+
+   أبعاد الاستبانة ومفتاح القراءة
+   (مطابقة للاستبانة المعتمدة)
+
+======================================== */
+
+
+const dimensionNames = [
+
+  "الوضوح",
+
+  "المرونة",
+
+  "التكامل",
+
+  "التعلّم"
+
+];
+
+
+const dimensionOrdinals = [
+
+  "الأول",
+
+  "الثاني",
+
+  "الثالث",
+
+  "الرابع"
+
+];
+
+
+const scoreKey = [
+
+  [
+    "17–20",
+    "ممارسة راسخة",
+    "حافظ عليها، وانقلها إلى زملائك وفريقك."
+  ],
+
+  [
+    "12–16",
+    "ممارسة موجودة لكنها غير منتظمة",
+    "اجعلها عادة: موعد ثابت، ومسؤول واضح، وأداة بسيطة."
+  ],
+
+  [
+    "4–11",
+    "فرصة تحسين أولى",
+    "ابدأ منها في عيادة الرشاقة بأصغر تحسين ممكن."
+  ]
+
+];
+
+
+const methodNote =
+
+  "أداة تأمل ذاتي مبنية على أبعاد لقاء «رشاقة الأداء المؤسسي»، " +
+  "ومستأنسة بأبعاد مقاييس الرشاقة في الأدبيات. ليست مقياسًا محكّمًا، " +
+  "ولم تخضع لاختبار صدق وثبات؛ فلا تُستخدم لتقييم الأشخاص " +
+  "أو مقارنة الجهات أو اتخاذ قرارات إدارية.";
 
 
 
@@ -1270,19 +1376,6 @@ function calculateAssessment(
   }
 
 
-  const dimensionNames = [
-
-    "الوضوح",
-
-    "المرونة",
-
-    "التكامل",
-
-    "التعلّم"
-
-  ];
-
-
   const dimensions =
 
     dimensionNames.map(
@@ -1336,14 +1429,28 @@ function calculateAssessment(
     );
 
 
-  const sorted =
+  // عند تساوي درجتين أو أكثر تُذكر الأبعاد المتساوية كلها
 
-    [...dimensions]
-
-    .sort(
-      (a, b) =>
-        b.score - a.score
+  const scores =
+    dimensions.map(
+      item => item.score
     );
+
+
+  const namesWithScore = score =>
+
+    dimensions
+
+    .filter(
+      item =>
+        item.score === score
+    )
+
+    .map(
+      item => item.name
+    )
+
+    .join(" و");
 
 
   return {
@@ -1362,12 +1469,14 @@ function calculateAssessment(
     dimensions,
 
     strongest:
-      sorted[0].name,
+      namesWithScore(
+        Math.max(...scores)
+      ),
 
     weakest:
-      sorted[
-        sorted.length - 1
-      ].name
+      namesWithScore(
+        Math.min(...scores)
+      )
 
   };
 
@@ -1787,7 +1896,8 @@ function render() {
 
 
     renderAssessment(
-      saved[1]
+      saved[1],
+      activity.is_open
     );
 
 
@@ -1816,7 +1926,8 @@ function render() {
 
 
 function renderAssessment(
-  saved
+  saved,
+  isOpen
 ) {
 
 
@@ -1831,7 +1942,8 @@ function renderAssessment(
 
 
     renderAssessmentResult(
-      existing._result
+      existing,
+      isOpen
     );
 
 
@@ -1870,11 +1982,23 @@ function renderAssessment(
       أين أقف في الوضوح
       والمرونة والتكامل والتعلّم؟
 
+    </p>
+
+
+    <div class="notice">
+
+      <b>التعليمات:</b>
+
       اختر ما يصف ممارستك
       وبيئة عملك المباشرة
       خلال الأشهر الثلاثة الأخيرة.
 
-    </p>
+      لا توجد إجابة صحيحة وأخرى خاطئة.
+
+      تُحفظ إجاباتك ونتيجتك في دفترك،
+      ويطّلع عليها المدرب.
+
+    </div>
 
   `;
 
@@ -1890,6 +2014,25 @@ function renderAssessment(
 
       const number =
         index + 1;
+
+
+      if (
+        index % 4 === 0
+      ) {
+
+        html += `
+
+          <h3 class="dimension-title">
+
+            البعد
+            ${dimensionOrdinals[index / 4]}:
+            ${dimensionNames[index / 4]}
+
+          </h3>
+
+        `;
+
+      }
 
 
       html += `
@@ -1996,11 +2139,8 @@ function renderAssessment(
 
     <p class="method-note">
 
-      أداة تأمل ذاتي وليست
-      مقياسًا محكمًا،
-      ولا تستخدم لتقييم الأشخاص
-      أو مقارنة الجهات
-      أو اتخاذ قرارات إدارية.
+      <b>تنبيه منهجي:</b>
+      ${escapeHtml(methodNote)}
 
     </p>
 
@@ -2152,9 +2292,34 @@ async function saveAssessment() {
 ======================================== */
 
 
+function bandClass(score) {
+
+  if (score >= 17) {
+    return "band-high";
+  }
+
+  if (score >= 12) {
+    return "band-mid";
+  }
+
+  return "band-low";
+
+}
+
+
+
 function renderAssessmentResult(
-  result
+  answers,
+  isOpen
 ) {
+
+
+  const result =
+    answers._result;
+
+
+  const next =
+    answers._next || {};
 
 
   getElement(
@@ -2192,10 +2357,8 @@ function renderAssessmentResult(
           <div class="bar">
 
             <span
-              style="
-                width:
-                ${(item.score / 20) * 100}%
-              "
+              class="${bandClass(item.score)}"
+              style="width:${(item.score / 20) * 100}%"
             ></span>
 
           </div>
@@ -2225,6 +2388,40 @@ function renderAssessmentResult(
     )
 
     .join("");
+
+
+
+  const keyRows =
+
+    scoreKey
+
+    .map(
+
+      row => `
+
+        <tr>
+
+          <td><b>${row[0]}</b></td>
+
+          <td>${escapeHtml(row[1])}</td>
+
+          <td>${escapeHtml(row[2])}</td>
+
+        </tr>
+
+      `
+
+    )
+
+    .join("");
+
+
+
+  const disabled =
+
+    isOpen
+    ? ""
+    : "disabled";
 
 
 
@@ -2275,13 +2472,46 @@ function renderAssessmentResult(
 
 
 
-    <div
-      class="notice"
-      style="margin-top:14px"
-    >
+    <h3>
+      اقرأ نتيجتك
+    </h3>
+
+
+    <table class="key-table">
+
+      <thead>
+
+        <tr>
+
+          <th>درجة البعد</th>
+
+          <th>القراءة</th>
+
+          <th>ماذا تفعل؟</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        ${keyRows}
+
+      </tbody>
+
+    </table>
+
+
+
+    <h3>
+      خطوتي التالية
+    </h3>
+
+
+    <div class="notice">
 
       <b>
-        أقوى بُعد:
+        أقوى بُعد عندي:
       </b>
 
       ${escapeHtml(
@@ -2291,7 +2521,7 @@ function renderAssessmentResult(
       <br>
 
       <b>
-        أضعف بُعد:
+        أضعف بُعد عندي:
       </b>
 
       ${escapeHtml(
@@ -2301,14 +2531,182 @@ function renderAssessmentResult(
     </div>
 
 
-    <p class="muted">
+    <label for="nextImprovement">
 
-      تم حفظ إجاباتك
-      وتحليل النتيجة.
+      أصغر تحسين سأجربه فيه خلال أسبوعين
+
+    </label>
+
+    <textarea
+      id="nextImprovement"
+      ${disabled}
+    >${escapeHtml(next.improvement || "")}</textarea>
+
+
+    <label for="nextMeasure">
+
+      كيف سأعرف أنه نجح؟
+
+    </label>
+
+    <textarea
+      id="nextMeasure"
+      ${disabled}
+    >${escapeHtml(next.measure || "")}</textarea>
+
+
+    <div class="actions">
+
+      <button
+        id="saveNextButton"
+        class="button"
+        type="button"
+        ${disabled}
+      >
+
+        ${next.improvement || next.measure
+          ? "تحديث خطوتي التالية"
+          : "حفظ خطوتي التالية"}
+
+      </button>
+
+    </div>
+
+
+    <p
+      id="saveMessage"
+    ></p>
+
+
+    <p class="method-note">
+
+      <b>تنبيه منهجي:</b>
+      ${escapeHtml(methodNote)}
 
     </p>
 
   `;
+
+
+  if (
+    isOpen
+  ) {
+
+    getElement(
+      "saveNextButton"
+    ).onclick = () =>
+
+      saveNextStep(
+        answers
+      );
+
+  }
+
+}
+
+
+
+/* ========================================
+
+   حفظ خطوتي التالية
+
+======================================== */
+
+
+async function saveNextStep(
+  answers
+) {
+
+
+  const message =
+
+    getElement(
+      "saveMessage"
+    );
+
+
+  const updated = {
+
+    ...answers,
+
+    _next: {
+
+      improvement:
+        getElement(
+          "nextImprovement"
+        ).value.trim(),
+
+      measure:
+        getElement(
+          "nextMeasure"
+        ).value.trim()
+
+    }
+
+  };
+
+
+  message.className =
+    "muted";
+
+
+  message.textContent =
+    "جارٍ الحفظ...";
+
+
+  try {
+
+
+    await apiCall({
+
+      action:
+        "save",
+
+      token:
+        accessToken,
+
+      activity_id:
+        1,
+
+      answers:
+        updated
+
+    });
+
+
+    await loadStatus();
+
+
+    const saved =
+      getElement(
+        "saveMessage"
+      );
+
+
+    if (saved) {
+
+      saved.className =
+        "success";
+
+      saved.textContent =
+        "✓ تم الحفظ";
+
+    }
+
+
+  } catch (error) {
+
+
+    message.className =
+      "error";
+
+
+    message.textContent =
+
+      "تعذر الحفظ: " +
+      error.message;
+
+  }
 
 }
 
@@ -2860,6 +3258,41 @@ async function downloadWorkbook() {
 
 
           <h3>
+            خطوتي التالية
+          </h3>
+
+
+          <p>
+
+            <b>
+              أصغر تحسين سأجربه فيه خلال أسبوعين:
+            </b>
+
+            <br>
+
+            ${escapeHtml(
+              saved.answers._next?.improvement || ""
+            )}
+
+          </p>
+
+
+          <p>
+
+            <b>
+              كيف سأعرف أنه نجح؟
+            </b>
+
+            <br>
+
+            ${escapeHtml(
+              saved.answers._next?.measure || ""
+            )}
+
+          </p>
+
+
+          <h3>
             إجابات الاستبانة
           </h3>
 
@@ -2980,11 +3413,7 @@ async function downloadWorkbook() {
       <p>
 
         تنبيه منهجي:
-        أداة التأمل الذاتي
-        ليست مقياسًا محكمًا،
-        ولا تستخدم لتقييم الأشخاص
-        أو مقارنة الجهات
-        أو اتخاذ قرارات إدارية.
+        ${escapeHtml(methodNote)}
 
       </p>
 
