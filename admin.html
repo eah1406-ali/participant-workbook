@@ -428,7 +428,7 @@ class="muted">
 <th>الاسم</th>
 <th>البريد</th>
 <th>التسجيل</th>
-<th>الدفتر</th>
+<th>الإجراءات</th>
 
 </tr>
 
@@ -978,9 +978,27 @@ onclick="showParticipant('${participant.id}', this)">
 
 </button>
 
+<button
+class="btn red"
+data-delete>
+
+حذف
+
+</button>
+
 </td>
 
 `;
+
+
+tr.querySelector(
+"[data-delete]"
+).onclick=
+event=>
+deleteParticipant(
+participant,
+event.currentTarget
+);
 
 
 body.appendChild(
@@ -1301,6 +1319,63 @@ button.textContent=
 label;
 
 }
+
+}
+
+}
+
+
+
+async function deleteParticipant(
+participant,
+button
+){
+
+if(
+!confirm(
+"حذف المتدرب «" +
+participant.name +
+"» وكل إجاباته نهائيًا؟\nلا يمكن التراجع عن الحذف."
+)
+){
+
+return;
+
+}
+
+
+button.disabled=true;
+
+button.textContent=
+"جارٍ الحذف...";
+
+
+try{
+
+await api({
+
+action:
+"delete_participant",
+
+participant_id:
+participant.id
+
+});
+
+
+await loadDashboard();
+
+
+}catch(error){
+
+button.disabled=false;
+
+button.textContent=
+"حذف";
+
+alert(
+"تعذر حذف المتدرب."
+);
 
 }
 
