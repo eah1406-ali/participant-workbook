@@ -1,0 +1,1573 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>لوحة المدرب | رشاقة الأداء المؤسسي</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap"
+rel="stylesheet">
+
+<style>
+
+:root{
+--primary:#2F4053;
+--dark:#233140;
+--gold:#7B6F5A;
+--sand:#F4F1EC;
+--text:#27313D;
+--muted:#6B7280;
+--bg:#FAFAF8;
+--border:#E5E7EB;
+--white:#fff;
+--green:#2F6B54;
+--red:#A04444;
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:Tajawal,sans-serif;
+line-height:1.7;
+}
+
+.wrap{
+max-width:1200px;
+margin:auto;
+padding:20px 16px 70px;
+}
+
+.hero{
+background:linear-gradient(135deg,var(--dark),var(--primary));
+color:white;
+padding:26px;
+border-radius:24px;
+margin-bottom:18px;
+}
+
+.hero h1{
+margin:5px 0;
+}
+
+.hero p{
+margin:0;
+color:#e8e2da;
+}
+
+.card{
+background:white;
+border:1px solid var(--border);
+border-radius:18px;
+padding:18px;
+margin:14px 0;
+box-shadow:0 7px 22px rgba(35,49,64,.05);
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+}
+
+.stat{
+background:var(--sand);
+padding:18px;
+border-radius:15px;
+text-align:center;
+}
+
+.stat strong{
+font-size:2rem;
+display:block;
+color:var(--primary);
+}
+
+button{
+font-family:inherit;
+cursor:pointer;
+}
+
+.btn{
+border:0;
+border-radius:11px;
+padding:10px 15px;
+background:var(--primary);
+color:white;
+font-weight:800;
+}
+
+.btn.gold{
+background:var(--gold);
+}
+
+.btn.red{
+background:var(--red);
+}
+
+.btn.light{
+background:white;
+color:var(--primary);
+border:1px solid var(--border);
+}
+
+input{
+width:100%;
+border:1px solid #d7dce1;
+border-radius:11px;
+padding:12px;
+font:inherit;
+}
+
+label{
+display:block;
+font-weight:700;
+margin:10px 0 6px;
+}
+
+.hidden{
+display:none!important;
+}
+
+.activities{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
+
+.activity{
+border:1px solid var(--border);
+border-radius:14px;
+padding:13px;
+background:white;
+cursor:pointer;
+text-align:right;
+}
+
+.activity.current{
+border:2px solid var(--gold);
+background:var(--sand);
+}
+
+.activity strong{
+display:block;
+margin-bottom:4px;
+}
+
+.activity small{
+color:var(--muted);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid var(--border);
+text-align:right;
+vertical-align:top;
+}
+
+th{
+background:var(--sand);
+}
+
+.answer{
+background:var(--sand);
+border-radius:10px;
+padding:10px;
+margin:5px 0;
+}
+
+.tag{
+display:inline-block;
+padding:4px 9px;
+border-radius:999px;
+background:var(--sand);
+font-size:.86rem;
+}
+
+.success{
+color:var(--green);
+font-weight:800;
+}
+
+.error{
+color:var(--red);
+font-weight:800;
+}
+
+.toolbar{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+align-items:center;
+justify-content:space-between;
+}
+
+.response-card{
+border:1px solid var(--border);
+border-radius:15px;
+padding:15px;
+margin:10px 0;
+}
+
+.response-card h3{
+margin:0 0 4px;
+}
+
+.muted{
+color:var(--muted);
+}
+
+@media(max-width:800px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.activities{
+grid-template-columns:1fr 1fr;
+}
+
+table{
+font-size:.9rem;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<main class="wrap">
+
+<header class="hero">
+
+<small>لوحة المدرب</small>
+
+<h1>
+رشاقة الأداء المؤسسي في قطاع الأوقاف
+</h1>
+
+<p>
+إدارة الأنشطة ومتابعة المشاركين والاستجابات
+</p>
+
+</header>
+
+
+<section id="loginCard" class="card">
+
+<h2>دخول المدرب</h2>
+
+<p class="muted">
+أدخل رمز لوحة المدرب.
+</p>
+
+<label for="pin">
+رمز الدخول
+</label>
+
+<input
+id="pin"
+type="password"
+inputmode="numeric"
+placeholder="••••••">
+
+<div style="margin-top:14px">
+
+<button
+id="loginBtn"
+class="btn">
+دخول
+</button>
+
+</div>
+
+<p id="loginMessage"></p>
+
+</section>
+
+
+
+<section
+id="dashboard"
+class="hidden">
+
+
+<div class="grid">
+
+<div class="stat">
+
+<strong id="participantCount">
+0
+</strong>
+
+المشاركون
+
+</div>
+
+
+<div class="stat">
+
+<strong id="responseCount">
+0
+</strong>
+
+استجابات النشاط الحالي
+
+</div>
+
+
+<div class="stat">
+
+<strong id="currentActivityNumber">
+-
+</strong>
+
+النشاط الحالي
+
+</div>
+
+</div>
+
+
+
+<section class="card">
+
+<div class="toolbar">
+
+<div>
+
+<h2 style="margin:0">
+التحكم بالأنشطة
+</h2>
+
+<p class="muted" style="margin:3px 0">
+فتح نشاط جديد يغلق النشاط السابق تلقائيًا.
+</p>
+
+</div>
+
+
+<button
+class="btn light"
+onclick="loadDashboard()">
+
+تحديث
+
+</button>
+
+</div>
+
+
+<div
+id="activities"
+class="activities">
+</div>
+
+</section>
+
+
+
+<section class="card">
+
+<div class="toolbar">
+
+<div>
+
+<h2 style="margin:0">
+الاستجابات
+</h2>
+
+<p
+id="responsesTitle"
+class="muted">
+</p>
+
+</div>
+
+</div>
+
+
+<div id="responses">
+</div>
+
+</section>
+
+
+
+<section class="card">
+
+<h2>
+قائمة المشاركين
+</h2>
+
+<div style="overflow:auto">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>الاسم</th>
+<th>البريد</th>
+<th>التسجيل</th>
+<th>الدفتر</th>
+
+</tr>
+
+</thead>
+
+<tbody id="participantsTable">
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+
+<section class="card">
+
+<h2>
+إدارة اللقاء
+</h2>
+
+<p class="muted">
+
+هذه الأدوات تستخدم بعد انتهاء اللقاء أو قبل بدء لقاء جديد.
+
+</p>
+
+
+<div class="toolbar">
+
+<button
+class="btn gold"
+onclick="downloadBackup()">
+
+تنزيل نسخة احتياطية
+
+</button>
+
+
+<button
+class="btn red"
+onclick="resetMeeting()">
+
+بدء لقاء جديد ومسح المشاركات
+
+</button>
+
+</div>
+
+</section>
+
+
+</section>
+
+
+</main>
+
+
+
+<script>
+
+const API =
+"https://uqqjkfsgcxxrrrneixeh.supabase.co/functions/v1/workbook-admin";
+
+
+let adminPin =
+sessionStorage.getItem(
+"workbook_admin_pin"
+) || "";
+
+
+let selectedActivity = 1;
+
+
+const activityFields = {
+
+1:[
+"q1","q2","q3","q4",
+"q5","q6","q7","q8",
+"q9","q10","q11","q12",
+"q13","q14","q15","q16"
+],
+
+2:[
+"task",
+"why",
+"change",
+"beneficiary"
+],
+
+3:[
+"start",
+"move",
+"wait",
+"decision",
+"novalue",
+"improve"
+],
+
+4:[
+"goal",
+"reality",
+"adjust"
+],
+
+5:[
+"task",
+"output",
+"outcome",
+"impact",
+"beneficiary",
+"stop",
+"value"
+],
+
+6:[
+"happened",
+"why",
+"learned",
+"change",
+"owner"
+],
+
+7:[
+"practice",
+"problem",
+"small",
+"with",
+"when",
+"measure"
+],
+
+8:[
+"start",
+"change"
+]
+
+};
+
+
+const fieldLabels={
+
+task:"المهمة",
+why:"لماذا؟",
+change:"ما الذي سيتغير؟",
+beneficiary:"المستفيد",
+start:"البداية",
+move:"إلى من ينتقل؟",
+wait:"موضع الانتظار",
+decision:"موضع القرار",
+novalue:"خطوة لا تضيف قيمة",
+improve:"التحسين المقترح",
+goal:"الهدف الثابت",
+reality:"ما الذي تغير؟",
+adjust:"ما الذي يمكن تعديله؟",
+output:"المخرج",
+outcome:"النتيجة",
+impact:"الأثر",
+stop:"ماذا سيتأثر؟",
+value:"الدلالة",
+happened:"ماذا حدث؟",
+learned:"ماذا تعلمنا؟",
+owner:"المسؤول والموعد",
+practice:"الممارسة",
+problem:"المشكلة",
+small:"أصغر تحسين",
+with:"مع من؟",
+when:"متى؟",
+measure:"مؤشر النجاح"
+
+};
+
+
+async function api(body){
+
+const response =
+await fetch(
+
+API,
+
+{
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify({
+
+...body,
+
+pin:
+adminPin
+
+})
+
+}
+
+);
+
+
+let data={};
+
+try{
+data=
+await response.json();
+}catch{}
+
+
+if(!response.ok){
+
+throw new Error(
+data.error ||
+"حدث خطأ في الاتصال."
+);
+
+}
+
+return data;
+
+}
+
+
+
+async function login(){
+
+const value =
+document
+.getElementById("pin")
+.value
+.trim();
+
+
+if(!value){
+
+return;
+
+}
+
+
+adminPin=value;
+
+
+try{
+
+await api({
+action:"login"
+});
+
+
+sessionStorage.setItem(
+"workbook_admin_pin",
+adminPin
+);
+
+
+document
+.getElementById("loginCard")
+.classList.add("hidden");
+
+
+document
+.getElementById("dashboard")
+.classList.remove("hidden");
+
+
+loadDashboard();
+
+
+}catch(error){
+
+document
+.getElementById("loginMessage")
+.className="error";
+
+
+document
+.getElementById("loginMessage")
+.textContent=
+"رمز الدخول غير صحيح.";
+
+}
+
+}
+
+
+
+async function loadDashboard(){
+
+try{
+
+const data =
+await api({
+
+action:"dashboard",
+
+activity_id:
+selectedActivity
+
+});
+
+
+document
+.getElementById(
+"participantCount"
+).textContent=
+data.participant_count;
+
+
+document
+.getElementById(
+"responseCount"
+).textContent=
+data.current_response_count;
+
+
+document
+.getElementById(
+"currentActivityNumber"
+).textContent=
+data.current_activity;
+
+
+renderActivities(
+data.activities,
+data.current_activity
+);
+
+
+renderParticipants(
+data.participants_list
+);
+
+
+renderResponses(
+data.responses,
+data.activities
+);
+
+
+}catch(error){
+
+console.error(error);
+
+}
+
+}
+
+
+
+function renderActivities(
+activities,
+current
+){
+
+const container =
+document.getElementById(
+"activities"
+);
+
+
+container.innerHTML="";
+
+
+activities.forEach(
+
+activity=>{
+
+
+const div =
+document.createElement(
+"div"
+);
+
+
+div.className=
+"activity";
+
+
+if(
+Number(activity.id) ===
+Number(current)
+){
+
+div.classList.add(
+"current"
+);
+
+}
+
+
+div.innerHTML=`
+
+<strong>
+${activity.id}.
+${escapeHtml(activity.title)}
+</strong>
+
+<small>
+${
+activity.is_open
+? "مفتوح الآن"
+: "مغلق"
+}
+</small>
+
+<div style="margin-top:8px">
+
+<button
+class="btn"
+onclick="openActivity(${activity.id})">
+
+فتح النشاط
+
+</button>
+
+<button
+class="btn light"
+onclick="viewActivity(${activity.id})">
+
+عرض الإجابات
+
+</button>
+
+</div>
+
+`;
+
+
+container.appendChild(
+div
+);
+
+}
+
+);
+
+}
+
+
+
+async function openActivity(id){
+
+if(
+!confirm(
+"فتح النشاط رقم " +
+id +
+" وإغلاق النشاط الحالي؟"
+)
+){
+
+return;
+
+}
+
+
+await api({
+
+action:
+"set_activity",
+
+activity_id:
+id
+
+});
+
+
+selectedActivity=id;
+
+
+await loadDashboard();
+
+}
+
+
+
+function viewActivity(id){
+
+selectedActivity=id;
+
+loadDashboard();
+
+}
+
+
+
+function renderParticipants(
+participants
+){
+
+const body =
+document.getElementById(
+"participantsTable"
+);
+
+
+body.innerHTML="";
+
+
+participants.forEach(
+
+participant=>{
+
+
+const tr =
+document.createElement(
+"tr"
+);
+
+
+const date =
+new Date(
+participant.created_at
+)
+.toLocaleString(
+"ar-SA"
+);
+
+
+tr.innerHTML=`
+
+<td>
+${escapeHtml(participant.name)}
+</td>
+
+<td>
+${escapeHtml(participant.email || "")}
+</td>
+
+<td>
+${date}
+</td>
+
+<td>
+
+<button
+class="btn light"
+onclick="showParticipant('${participant.id}')">
+
+عرض
+
+</button>
+
+</td>
+
+`;
+
+
+body.appendChild(
+tr
+);
+
+}
+
+);
+
+}
+
+
+
+function renderResponses(
+responses,
+activities
+){
+
+const activity =
+activities.find(
+
+a =>
+Number(a.id) ===
+Number(selectedActivity)
+
+);
+
+
+document.getElementById(
+"responsesTitle"
+).textContent=
+
+activity
+
+? "النشاط " +
+selectedActivity +
+": " +
+activity.title
+
+: "";
+
+
+const container =
+document.getElementById(
+"responses"
+);
+
+
+container.innerHTML="";
+
+
+if(!responses.length){
+
+container.innerHTML=
+
+"<p class='muted'>لا توجد استجابات حتى الآن.</p>";
+
+return;
+
+}
+
+
+responses.forEach(
+
+response=>{
+
+
+const card =
+document.createElement(
+"div"
+);
+
+
+card.className=
+"response-card";
+
+
+let answers="";
+
+
+if(
+selectedActivity === 1 &&
+response.answers?._result
+){
+
+const result =
+response.answers._result;
+
+
+answers += `
+
+<div class="answer">
+
+<b>
+المجموع:
+${result.total}
+/80
+</b>
+
+<br>
+
+أقوى بُعد:
+${escapeHtml(result.strongest)}
+
+<br>
+
+أضعف بُعد:
+${escapeHtml(result.weakest)}
+
+</div>
+
+`;
+
+
+result.dimensions.forEach(
+
+dimension=>{
+
+answers += `
+
+<div class="answer">
+
+<b>
+${escapeHtml(dimension.name)}
+:
+${dimension.score}
+/20
+</b>
+
+<br>
+
+${escapeHtml(dimension.label)}
+
+</div>
+
+`;
+
+}
+
+);
+
+
+}else{
+
+const fields =
+activityFields[
+selectedActivity
+] || [];
+
+
+fields.forEach(
+
+key=>{
+
+
+const value =
+response.answers?.[key];
+
+
+if(
+value !== undefined &&
+value !== ""
+){
+
+answers += `
+
+<div class="answer">
+
+<b>
+${escapeHtml(
+fieldLabels[key] ||
+key
+)}
+</b>
+
+<br>
+
+${escapeHtml(value)}
+
+</div>
+
+`;
+
+}
+
+}
+
+);
+
+}
+
+
+card.innerHTML=`
+
+<h3>
+${escapeHtml(
+response.participant_name ||
+"مشارك"
+)}
+</h3>
+
+<div class="muted">
+
+${escapeHtml(
+response.email || ""
+)}
+
+</div>
+
+${answers}
+
+`;
+
+
+container.appendChild(
+card
+);
+
+}
+
+);
+
+}
+
+
+
+async function showParticipant(
+participantId
+){
+
+try{
+
+const data =
+await api({
+
+action:
+"participant_workbook",
+
+participant_id:
+participantId
+
+});
+
+
+let text=
+
+"دفتر المشارك: " +
+data.participant.name +
+"\n\n";
+
+
+data.responses.forEach(
+
+response=>{
+
+text +=
+
+"النشاط: " +
+(
+response.workbook_activities?.title ||
+response.activity_id
+) +
+
+"\n";
+
+
+text +=
+
+JSON.stringify(
+response.answers,
+null,
+2
+);
+
+
+text +=
+"\n\n";
+
+}
+
+);
+
+
+const blob=
+new Blob(
+
+[text],
+
+{
+type:
+"text/plain;charset=utf-8"
+}
+
+);
+
+
+const url=
+URL.createObjectURL(
+blob
+);
+
+
+const link=
+document.createElement(
+"a"
+);
+
+
+link.href=url;
+
+
+link.download=
+
+"دفتر_" +
+data.participant.name +
+".txt";
+
+
+link.click();
+
+
+URL.revokeObjectURL(
+url
+);
+
+
+}catch(error){
+
+alert(
+"تعذر تحميل دفتر المشارك."
+);
+
+}
+
+}
+
+
+
+async function downloadBackup(){
+
+try{
+
+const data =
+await api({
+
+action:
+"meeting_backup"
+
+});
+
+
+const blob=
+new Blob(
+
+[
+JSON.stringify(
+data,
+null,
+2
+)
+],
+
+{
+type:
+"application/json;charset=utf-8"
+}
+
+);
+
+
+const url=
+URL.createObjectURL(
+blob
+);
+
+
+const link=
+document.createElement(
+"a"
+);
+
+
+link.href=url;
+
+
+link.download=
+
+"workbook-backup-" +
+new Date()
+.toISOString()
+.slice(0,10)
++
+".json";
+
+
+link.click();
+
+
+URL.revokeObjectURL(
+url
+);
+
+
+}catch(error){
+
+alert(
+"تعذر إنشاء النسخة الاحتياطية."
+);
+
+}
+
+}
+
+
+
+async function resetMeeting(){
+
+const first=
+
+confirm(
+
+"سيتم حذف جميع المشاركين والإجابات الحالية. هل تريد المتابعة؟"
+
+);
+
+
+if(!first){
+
+return;
+
+}
+
+
+const second=
+
+prompt(
+
+'للتأكيد اكتب:\nSTART_NEW_MEETING'
+
+);
+
+
+if(
+second !==
+"START_NEW_MEETING"
+){
+
+alert(
+"تم إلغاء العملية."
+);
+
+return;
+
+}
+
+
+try{
+
+await api({
+
+action:
+"reset_meeting",
+
+confirm:
+"START_NEW_MEETING"
+
+});
+
+
+selectedActivity=1;
+
+
+await loadDashboard();
+
+
+alert(
+"تم بدء لقاء جديد."
+);
+
+
+}catch(error){
+
+alert(
+"تعذر بدء اللقاء الجديد."
+);
+
+}
+
+}
+
+
+
+function escapeHtml(value){
+
+return String(
+value ?? ""
+)
+
+.replaceAll(
+"&",
+"&amp;"
+)
+
+.replaceAll(
+"<",
+"&lt;"
+)
+
+.replaceAll(
+">",
+"&gt;"
+)
+
+.replaceAll(
+'"',
+"&quot;"
+);
+
+}
+
+
+
+document
+.getElementById(
+"loginBtn"
+)
+.onclick=
+login;
+
+
+document
+.getElementById(
+"pin"
+)
+.addEventListener(
+
+"keydown",
+
+event=>{
+
+if(
+event.key ===
+"Enter"
+){
+
+login();
+
+}
+
+}
+
+);
+
+
+
+if(adminPin){
+
+document
+.getElementById("pin")
+.value=
+adminPin;
+
+login();
+
+}
+
+
+
+/*
+تحديث تلقائي كل 5 ثوانٍ
+*/
+
+setInterval(
+
+()=>{
+
+if(
+!document
+.getElementById("dashboard")
+.classList.contains("hidden")
+){
+
+loadDashboard();
+
+}
+
+},
+
+5000
+);
+
+</script>
+
+</body>
+
+</html>
